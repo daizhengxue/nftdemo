@@ -6,9 +6,10 @@ import NftCard from '../components/NftCard';
 const Home = () => {
   const [nftData, setNftData] = useState(null);
 
-  const handleSearch = async (address) => {
+  const handleSearch = async (address, contractAddress) => {
+    setNftData(null);
     try {
-      const response = await axios.get(`/api/chainbaseApi?address=${address}`);
+      const response = await axios.get(`/api/chainbaseApi?address=${address}&contract_address=${contractAddress}`);
       setNftData(response.data.data);
     } catch (error) {
       console.error(error);

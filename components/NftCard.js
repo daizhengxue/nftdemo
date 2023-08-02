@@ -23,11 +23,20 @@ const NftCard = ({ nft }) => {
   const [isVideo, setIsVideo] = useState(false);
 
   useEffect(() => {
-    fetch(imageUrl).then((response) => {
-      if (response.headers.get('Content-Type').startsWith('video')) {
-        setIsVideo(true);
-      }
-    });
+    fetch(imageUrl)
+      .then((response) => {
+        if (!response.ok) {c
+          throw new Error('Failed to fetch image');
+        }
+        const contentType = response.headers.get('Content-Type');
+        if (contentType && contentType.startsWith('video')) {
+          setIsVideo(true);
+        }
+      })
+      .catch((error) => {
+        // This is where errors can be logged or default images can be set, but it will not cause unhandled runtime errors.
+        console.error('Error fetching image:', error);
+      });
   }, [imageUrl]);
 
   return (

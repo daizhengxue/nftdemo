@@ -12,7 +12,11 @@ export default async function handler(req, res) {
   try {
 
     const baseUrl = 'https://api.chainbase.online/v1/account/nfts?chain_id=1';
-    const targetUrl = `${baseUrl}&address=${query.address}`;
+    let targetUrl = `${baseUrl}&address=${query.address}&limit=100`;
+
+    if (query.contract_address) {
+        targetUrl += `&contract_address=${query.contract_address}`;
+      }
 
     console.log('Target URL:', targetUrl); // print target URL to test
 
@@ -21,7 +25,7 @@ export default async function handler(req, res) {
       headers: {
         accept: 'application/json',
         //'x-api-key':process.env.CHAINBASE_API_KEY,
-        'x-api-key':'demo',
+        'x-api-key':'demo', 
       },
     });
 
