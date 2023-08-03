@@ -9,6 +9,11 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
 
+  if (method === 'OPTIONS') {
+    res.status(200).end();
+    return;
+  }
+
   try {
 
     const baseUrl = 'https://api.chainbase.online/v1/account/nfts?chain_id=1';
@@ -17,9 +22,6 @@ export default async function handler(req, res) {
     if (query.contract_address) {
         targetUrl += `&contract_address=${query.contract_address}`;
       }
-
-    console.log('Target URL:', targetUrl); // print target URL to test
-
     // Using fetch to request the target URL.
     const backendResponse = await fetch(targetUrl, {
       headers: {
