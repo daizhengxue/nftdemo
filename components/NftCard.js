@@ -25,7 +25,7 @@ const NftCard = ({ nft }) => {
   const imageUrl = convertToHttpUrl(imageUri);
   const [isVideo, setIsVideo] = useState(false);
   const [imageError, setImageError] = useState(false);
-  console.log('Image URL:', imageUrl); 
+  //console.log('Image URL:', imageUrl); 
 
   useEffect(() => {
     fetch(imageUrl)
