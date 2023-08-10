@@ -21,7 +21,7 @@ const Home = () => {
       <img src="/logo.png" alt="Chainbase Logo" style={{ marginTop: '20px', width: '300px', height: '50px' }} />
       <SearchBar onSearch={handleSearch} />
 
-      {nftData !== null && nftData.length > 0 ? (
+      {nftData && nftData.length > 0 ? (
         <div>
           <h2>NFTs for Address: {nftData[0].owner}</h2>
           <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
