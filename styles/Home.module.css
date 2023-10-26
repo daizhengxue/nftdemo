@@ -103,7 +103,7 @@
   line-height: 1.5;
 }
 
-.logo {
+.logo1 {
   height: 1em;
   margin-left: 0.5rem;
 }
@@ -123,7 +123,7 @@
   .code {
     background: #111;
   }
-  .logo img {
+  .logo1 img {
     filter: invert(1);
   }
 }

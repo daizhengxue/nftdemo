@@ -26,8 +26,8 @@ export default async function handler(req, res) {
     const backendResponse = await fetch(targetUrl, {
       headers: {
         accept: 'application/json',
-        //'x-api-key':process.env.CHAINBASE_API_KEY,
-        'x-api-key':'demo', 
+        'x-api-key':process.env.CHAINBASE_API_KEY,
+        // 'x-api-key':'demo', 
       },
     });
 

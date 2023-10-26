@@ -18,7 +18,7 @@ const Home = () => {
 
   return (
     <div style={{ textAlign: 'center' }}>
-      <img src="/logo.png" alt="Chainbase Logo" style={{ marginTop: '20px', width: '300px', height: '50px' }} />
+      <img src="/logo1.png" alt="Inflaxion Logo" style={{ marginTop: '20px', width: '300px', height: '50px' }} />
       <SearchBar onSearch={handleSearch} />
 
       {nftData && nftData.length > 0 ? (
