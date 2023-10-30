@@ -1,8 +1,8 @@
-import fetch from 'node-fetch';
+import axios from 'axios';
 
 export default async function handler(req, res) {
   const { method, query } = req;
-  console.log('Request received in chainbaeApi handler'); // print this log
+  console.log('Request received in chainbaseApi handler');
 
   // Set CORS-related response headers to allow requests from any origin.
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -15,19 +15,18 @@ export default async function handler(req, res) {
   }
 
   try {
-
     const baseUrl = 'https://api.chainbase.online/v1/account/nfts?chain_id=1';
     let targetUrl = `${baseUrl}&address=${query.address}&limit=100`;
 
     if (query.contract_address) {
-        targetUrl += `&contract_address=${query.contract_address}`;
-      }
+      targetUrl += `&contract_address=${query.contract_address}`;
+    }
+
     // Using fetch to request the target URL.
     const backendResponse = await fetch(targetUrl, {
       headers: {
         accept: 'application/json',
-        //'x-api-key':process.env.CHAINBASE_API_KEY,
-        'x-api-key':'demo', 
+        'x-api-key': process.env.CHAINBASE_API_KEY,
       },
     });
 
@@ -39,6 +38,22 @@ export default async function handler(req, res) {
       const backendResponseData = await backendResponse.json();
       res.status(backendResponse.status).json(backendResponseData);
     }
+  } catch (error) {
+    res.status(500).json({ error: 'Error' });
+  }
+}
+
+// New API-NFT owners
+export async function fetchNftOwnersWithoutCollection(req, res) {
+  try {
+    const ownersOptions = {
+      method: 'GET',
+      url: 'https://api.chainbase.online/v1/nft/owners?page=1&limit=20',
+      headers: { accept: 'application/json' },
+    };
+
+    const ownersResponse = await axios.request(ownersOptions);
+    res.status(200).json(ownersResponse.data);
   } catch (error) {
     res.status(500).json({ error: 'Error' });
   }
