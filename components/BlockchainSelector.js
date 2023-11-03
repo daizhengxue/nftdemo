@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
+import PropTypes from 'prop-types';
 
-const BlockchainSelector = ({ setSelectedChainId }) => {
-  const [selectedNetwork, setSelectedNetwork] = useState('ethereum'); // Set initial state to 'ethereum'
+const capitalizeFirstLetter = (string) => {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
 
-  const networkToChainId = {
+const useChainId = (initialNetwork) => {
+  const networkToChainId = useMemo(() => ({
     ethereum: 1,
     polygon: 137,
     bsc: 56,
@@ -12,40 +15,48 @@ const BlockchainSelector = ({ setSelectedChainId }) => {
     optimism: 10,
     base: 8453,
     zksync: 324,
-    // Add more mappings as needed
+  }), []);
+
+  const [selectedNetwork, setSelectedNetwork] = useState(initialNetwork);
+  const selectedChainId = networkToChainId[selectedNetwork];
+
+  return {
+    selectedNetwork,
+    setSelectedNetwork,
+    selectedChainId,
+    networkToChainId 
   };
+};
+
+const BlockchainSelector = ({ setSelectedChainId }) => {
+  const { selectedNetwork, setSelectedNetwork, selectedChainId, networkToChainId } = useChainId('ethereum');
 
   useEffect(() => {
-    // Set the initial chainId when the component mounts
-    const initialChainId = networkToChainId[selectedNetwork];
-    setSelectedChainId(initialChainId);
-  }, []); // Empty dependency array ensures this runs only once when component mounts
+    setSelectedChainId(selectedChainId);
+  }, [selectedChainId]);
 
   const handleChange = (event) => {
-    const selectedNetwork = event.target.value;
-    setSelectedNetwork(selectedNetwork);
-    const selectedChainId = networkToChainId[selectedNetwork];
-    setSelectedChainId(selectedChainId);
+    setSelectedNetwork(event.target.value);
   };
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-      <label style={{ order: -1 }}>
+      <label htmlFor="blockchainSelector" style={{ order: -1 }}>
         Select a Blockchain Network:
       </label>
-      <select value={selectedNetwork} onChange={handleChange}>
-        <option value="ethereum">Ethereum</option>
-        <option value="polygon">Polygon</option>
-        <option value="bsc">Binance Smart Chain</option>
-        <option value="avalanche">Avalanche</option>
-        <option value="arbitrum">Arbitrum</option>
-        <option value="optimism">Optimism</option>
-        <option value="base">Base</option>
-        <option value="zksync">ZkSync</option>
-        {/* Add more options as needed */}
+      <select id="blockchainSelector" value={selectedNetwork} onChange={handleChange}>
+        {Object.keys(networkToChainId).map((network) => (
+          <option key={network} value={network}>
+            {capitalizeFirstLetter(network)}
+          </option>
+        ))}
       </select>
     </div>
   );
+};
+
+BlockchainSelector.propTypes = {
+  setSelectedChainId: PropTypes.func.isRequired,
 };
 
 export default BlockchainSelector;
