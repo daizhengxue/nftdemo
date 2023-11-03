@@ -15,19 +15,20 @@ export default async function handler(req, res) {
   }
 
   try {
-
-    const baseUrl = 'https://api.chainbase.online/v1/account/nfts?chain_id=1';
+    const chainId = query.chain_id;
+    const baseUrl = `https://api.chainbase.online/v1/account/nfts?chain_id=${chainId}`;
     let targetUrl = `${baseUrl}&address=${query.address}&limit=100`;
 
     if (query.contract_address) {
         targetUrl += `&contract_address=${query.contract_address}`;
       }
+      console.log('Requesting URL:', targetUrl);
     // Using fetch to request the target URL.
     const backendResponse = await fetch(targetUrl, {
       headers: {
         accept: 'application/json',
-        //'x-api-key':process.env.CHAINBASE_API_KEY,
-        'x-api-key':'demo', 
+        'x-api-key':process.env.CHAINBASE_API_KEY,
+        //'x-api-key':'demo', 
       },
     });
 
