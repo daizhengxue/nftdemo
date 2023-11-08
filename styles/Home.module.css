@@ -127,3 +127,13 @@
     filter: invert(1);
   }
 }
+
+.blockchainSelectorContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.blockchainSelectorLabel {
+  order: -1;
+}

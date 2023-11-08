@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
+import styles from '../styles/Home.module.css';
 
 const capitalizeFirstLetter = (string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -28,6 +29,7 @@ const useChainId = (initialNetwork) => {
   };
 };
 
+
 const BlockchainSelector = ({ setSelectedChainId }) => {
   const { selectedNetwork, setSelectedNetwork, selectedChainId, networkToChainId } = useChainId('ethereum');
 
@@ -40,8 +42,8 @@ const BlockchainSelector = ({ setSelectedChainId }) => {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-      <label htmlFor="blockchainSelector" style={{ order: -1 }}>
+    <div className={styles.blockchainSelectorContainer}>
+      <label htmlFor="blockchainSelector" className={styles.blockchainSelectorLabel}>
         Select a Blockchain Network:
       </label>
       <select id="blockchainSelector" value={selectedNetwork} onChange={handleChange}>
