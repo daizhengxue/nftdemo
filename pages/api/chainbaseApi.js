@@ -27,7 +27,7 @@ export default async function handler(req, res) {
         },
       });
       const ensData = await ensResponse.json();
-      address = ensData.data.owner; // Ensure the address is correctly resolved from the ENS name
+      address = ensData.data.address; // Ensure the address is correctly resolved from the ENS name
     }
 
     const baseUrl = `https://api.chainbase.online/v1/account/nfts?chain_id=${chainId}`;
