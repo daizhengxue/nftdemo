@@ -46,7 +46,7 @@ const SearchBar = ({ onSearch }) => {
                         placeholder='Your ETH address or ENS name'
                         value={inputAddress}
                         onChange={(e) => setInputAddress(e.target.value)}
-                        style={{ margin: '10px 0' }}
+                        style={{ margin: '10px 0', width: '300px' }}
                     />
                 </>
             )}
@@ -55,7 +55,7 @@ const SearchBar = ({ onSearch }) => {
                 placeholder='NFT Contract address (optional)'
                 value={contractAddress}
                 onChange={(e) => setContractAddress(e.target.value)}
-                style={{ margin: '10px 0' }}
+                style={{ margin: '10px 0', width: '300px' }}
             />
             <button onClick={handleSearch}>Search</button>
         </div>
