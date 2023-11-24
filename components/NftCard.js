@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 
 const convertToHttpUrl = (url) => {
   if (typeof url === 'string' && url.startsWith('ipfs://')) {
@@ -18,7 +19,9 @@ const handleImageError = (e,setImageError) => {
   }
 };
 
-const NftCard = ({ nft }) => {
+const NftCard = ({ nft,chainId }) => {
+  //console.log('Chain ID:', chainId); // 
+  //console.log(`nftcardcontract_address: ${nft.contract_address}, chain_id: ${chainId}`);
   const maxTokenIdLength = 10;
   const truncatedTokenId = nft.token_id.length > maxTokenIdLength ? nft.token_id.substring(0, maxTokenIdLength) + '...' : nft.token_id;
   const imageUri = nft.image_uri || (nft.metadata ? nft.metadata.image : '');
@@ -57,8 +60,8 @@ const NftCard = ({ nft }) => {
       <h3>{nft.name}</h3>
       <p><strong>Symbol:</strong> {nft.symbol}</p>
       <p><strong>Token ID:</strong> <span title={nft.token_id}>{truncatedTokenId}</span></p>
-      <p><strong>Contract Address:</strong> {nft.contract_address}</p>
-    </div>
+      <p><strong>Contract Address:</strong> <Link href={`/collection/${nft.contract_address}?chain_id=${chainId}`} onClick={() => console.log(`contract_address: ${nft.contract_address}, chain_id: ${chainId}`)}>{nft.contract_address}</Link></p>
+</div>
   );
 };
 

@@ -30,7 +30,7 @@ const Home = () => {
           <h2>NFTs for Address: {nftData[0].owner}</h2>
           <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
             {nftData.map((nft) => (
-              <NftCard key={`${nft.contract_address}-${nft.token_id}`} nft={nft} />
+             <NftCard key={`${nft.contract_address}-${nft.token_id}`} nft={nft} chainId={selectedChainId} />
             ))}
           </div>
         </div>
