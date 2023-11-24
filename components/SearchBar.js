@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
 const SearchBar = ({ onSearch }) => {
-    const [inputAddress, setInputAddress] = useState(''); // 用户手动输入的地址 The address manually entered by the user
-    const [connectedAddress, setConnectedAddress] = useState(''); // 从MetaMask连接的地址 The address connected from MetaMask
+    const [inputAddress, setInputAddress] = useState(''); //  The address manually entered by the user
+    const [connectedAddress, setConnectedAddress] = useState(''); // The address connected from MetaMask
     const [contractAddress, setContractAddress] = useState('');
 
     const connectMetaMask = async () => {
@@ -15,15 +15,15 @@ const SearchBar = ({ onSearch }) => {
         try {
             accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
             setConnectedAddress(accounts[0]);
-            setInputAddress(''); // MetaMask连接后清空手动输入地址 address is cleared after connection
+            setInputAddress(''); //  address is cleared after connection
         } catch (error) {
             alert('You rejected the request.');
         }
     };
 
     const disconnectWallet = () => {
-        setConnectedAddress(''); // 清除连接的MetaMask地址 Clear the connected MetaMask address
-        setInputAddress(''); // 同时清除手动输入的地址 Clear the input address at the same time
+        setConnectedAddress(''); //  Clear the connected MetaMask address
+        setInputAddress(''); //  Clear the input address at the same time
     };
 
     const handleSearch = () => {
