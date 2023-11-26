@@ -1,4 +1,4 @@
-// 文件: pages/api/collectionApi.js
+// doc: pages/api/collectionApi.js
 
 import fetch from 'node-fetch';
 
