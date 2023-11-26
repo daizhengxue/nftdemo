@@ -2,20 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 
 const CollectionPage = () => {
-  const router = useRouter();
-  const { contract_address, chain_id } = router.query;
+  const router = useRouter(); // get router object
+  const { contract_address, chain_id } = router.query; // get contract_address and chain_id from the query string
   const [collectionData, setCollectionData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  // convertToHttpUrl
+  
   const convertToHttpUrl = (url) => {
     if (typeof url === 'string' && url.startsWith('ipfs://')) {
       return `https://cloudflare-ipfs.com/ipfs/${url.split('ipfs://')[1]}`;
     }
     return url;
   };
-
+    
   // checkIfVideo
   const checkIfVideo = async (url) => {
     try {
@@ -44,7 +43,7 @@ const CollectionPage = () => {
     if (contract_address && chain_id) {
       const fetchCollectionData = async () => {
         try {
-          const response = await fetch(`/api/collectionApi?chain_id=${chain_id}&contract_address=${contract_address}`);
+          const response = await fetch(`/api/collectionApi?chain_id=${chain_id}&contract_address=${contract_address}`);// fetch collection data onece the contract_address and chain_id are available
           if (!response.ok) throw new Error('Failed to fetch collection data');
           const data = await response.json();
           const processedData = await processNFTData(data.data);

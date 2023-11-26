@@ -1,59 +1,53 @@
 import fetch from 'node-fetch';
 
+// set up headers
+const headers = {
+  accept: 'application/json',
+  'x-api-key': process.env.CHAINBASE_API_KEY,
+};
+
 export default async function handler(req, res) {
   const { method, query } = req;
-  console.log('Request received in chainbaseApi handler'); // print this log
+  console.log('Request received in chainbaseApi handler');
 
-  // Set CORS-related response headers to allow requests from any origin.
+  // set CORS headers and handle OPTIONS method
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-
   if (method === 'OPTIONS') {
-    res.status(200).end();
-    return;
+    return res.status(200).end();
   }
 
   try {
     const chainId = query.chain_id;
     let address = query.address;
 
-    // Check if the input address is an ENS name
+    // if address is an ENS name, resolve it
     if (address.endsWith('.eth')) {
-      const ensResponse = await fetch(`https://api.chainbase.online/v1/ens/records?chain_id=${chainId}&domain=${address}`, {
-        headers: {
-          accept: 'application/json',
-          'x-api-key': process.env.CHAINBASE_API_KEY,
-        },
-      });
+      const ensResponse = await fetch(`https://api.chainbase.online/v1/ens/records?chain_id=${chainId}&domain=${address}`, { headers });
       const ensData = await ensResponse.json();
-      address = ensData.data.address; // Ensure the address is correctly resolved from the ENS name
+      address = ensData.data.address;
     }
 
-    const baseUrl = `https://api.chainbase.online/v1/account/nfts?chain_id=${chainId}`;
-    let targetUrl = `${baseUrl}&address=${address}&limit=100`;
-
+    // construct URL
+    const params = new URLSearchParams({ chain_id: chainId, address, limit: '100' });
     if (query.contract_address) {
-      targetUrl += `&contract_address=${query.contract_address}`;
+      params.append('contract_address', query.contract_address);
     }
-    console.log('Requesting URL:', targetUrl);
-    // Using fetch to request the target URL.
-    const backendResponse = await fetch(targetUrl, {
-      headers: {
-        accept: 'application/json',
-        'x-api-key': process.env.CHAINBASE_API_KEY,
-      },
-    });
+    //fetch(`https://api.chainbase.online/v1/account/nfts?${params}`, { headers });
+    const targetUrl = `https://api.chainbase.online/v1/account/nfts?${params}`;
+    console.log('Requesting URL:', targetUrl); // in case you want to debug
+    const backendResponse = await fetch(targetUrl, { headers });
 
-    // Checking if the response is successful.
     if (!backendResponse.ok) {
-      res.status(backendResponse.status).json({ error: 'Error' });
-    } else {
-      // Sending the response from the target server to the client.
-      const backendResponseData = await backendResponse.json();
-      res.status(backendResponse.status).json(backendResponseData);
+      return res.status(backendResponse.status).json({ error: 'Error' });
     }
+
+    const backendResponseData = await backendResponse.json();
+    res.status(200).json(backendResponseData);
+
   } catch (error) {
-    res.status(500).json({ error: 'Error' });
+    console.error('Error:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 }
